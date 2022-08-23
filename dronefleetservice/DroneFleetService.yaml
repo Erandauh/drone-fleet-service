@@ -57,7 +57,7 @@ paths:
           $ref: '#/components/responses/ConflictError'
         default:
           $ref: '#/components/responses/DefaultError'
-  /drone/{droneId}/battery:
+  /drone/{droneSerialNumber}/battery:
     get:
       tags:
         - Drone
@@ -80,10 +80,10 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
-  /medication/{droneId}:
+  /drone/{droneSerialNumber}/medication:
     post:
       tags:
-        - Medication
+        - Dispatch Medication
       operationId: loadDroneWithMedication
       summary: loading a drone with medication items
       description: loading a drone with medication items
@@ -109,7 +109,7 @@ paths:
           $ref: '#/components/responses/DefaultError'
     get:
       tags:
-        - Medication
+        - Dispatch Medication
       operationId: getLoadedMedicationItems
       summary: loaded Medication items for a drone
       description: loaded Medication items for a drone

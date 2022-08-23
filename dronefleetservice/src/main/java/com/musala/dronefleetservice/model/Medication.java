@@ -1,16 +1,45 @@
 package com.musala.dronefleetservice.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "MEDICATION_DISPATCH")
 public class Medication {
 
-    @Pattern(regexp="^[A-Z0-9_-]*$", message = "Invalid Medication Name")
-    private String name;
-    private int weight;
+    @Id
     @Pattern(regexp="^[A-Z0-9_]*$", message = "Invalid Medication Code")
+    @Column(name = "CODE")
     private String code;
-    private String image;
+
+    @Pattern(regexp="^[a-zA-Z0-9_-]*$", message = "Invalid Medication Name")
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "WEIGHT")
+    private int weight;
+
+    @Column(name = "IMAGEPATH")
+    private String imagePath;
+
+    @ManyToOne
+    @JoinColumn(name = "SERIALNUMBER")
+    @JsonIgnore
+    private Drone drone;
 }

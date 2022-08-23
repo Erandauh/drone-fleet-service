@@ -8,7 +8,7 @@ servers:
   - url: localhost:8080/api/v1
     description: Dev environment
 paths:
-  /register:
+  /drone/register:
     post:
       tags:
         - Drone
@@ -35,7 +35,7 @@ paths:
           $ref: '#/components/responses/ConflictError'
         default:
           $ref: '#/components/responses/DefaultError'
-  /availabilty:
+  /drone/availabilty:
     get:
       tags:
         - Drone
@@ -57,7 +57,7 @@ paths:
           $ref: '#/components/responses/ConflictError'
         default:
           $ref: '#/components/responses/DefaultError'
-  /{droneId}/battery:
+  /drone/{droneId}/battery:
     get:
       tags:
         - Drone

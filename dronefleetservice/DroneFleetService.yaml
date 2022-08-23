@@ -93,7 +93,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Medication'
+              $ref: '#/components/schemas/MedicationItems'
       responses:
         '201':
           description: Drone registered successfully. Response includes a referenced drone

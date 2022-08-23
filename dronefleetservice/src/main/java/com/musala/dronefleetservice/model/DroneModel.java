@@ -5,7 +5,7 @@ package com.musala.dronefleetservice.model;
  */
 public enum DroneModel {
     Lightweight,
-    MiddleWeight,
+    Middleweight,
     Cruiserweight,
     Heavyweight
 }

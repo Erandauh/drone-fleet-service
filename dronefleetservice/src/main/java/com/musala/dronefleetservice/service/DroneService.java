@@ -3,6 +3,7 @@ package com.musala.dronefleetservice.service;
 import java.util.List;
 
 
+import com.musala.dronefleetservice.model.BatteryHealth;
 import com.musala.dronefleetservice.model.Drone;
 
 public interface DroneService {
@@ -11,5 +12,5 @@ public interface DroneService {
 
     List<Drone> checkAvailableDrones();
 
-    int getDroneBatteryStatus();
+    BatteryHealth getDroneBatteryStatus(String droneSerialNumber);
 }

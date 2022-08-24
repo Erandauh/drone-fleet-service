@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,4 +32,8 @@ public class DispatchMedicationController {
         return medicationService.loadDrone(droneSerialNumber, medications);
     }
 
+    @GetMapping
+    public List<Medication> getMedications(@PathVariable String droneSerialNumber) {
+        return medicationService.getMedicationInDrone(droneSerialNumber);
+    }
 }

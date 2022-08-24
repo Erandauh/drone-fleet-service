@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.musala.dronefleetservice.exception.ConflictException;
 import com.musala.dronefleetservice.exception.EntityNotFoundException;
 import com.musala.dronefleetservice.model.BatteryHealth;
 import com.musala.dronefleetservice.model.Drone;
@@ -17,11 +18,15 @@ import lombok.RequiredArgsConstructor;
 public class DroneServiceImpl implements DroneService {
 
     private static final String ERR_MSG_DRONE_NOT_FOUND = "Drone not found";
+    private static final String ERR_MSG_DRONE_EXISTS = "Drone Already exists";
 
     private final DroneRepository droneRepository;
 
     @Override
     public Drone register(Drone droneIn) {
+        droneRepository.findById(droneIn.getSerialNumber()).ifPresent(drone -> {
+            throw new ConflictException(ERR_MSG_DRONE_EXISTS);
+        });
         return droneRepository.save(droneIn);
     }
 

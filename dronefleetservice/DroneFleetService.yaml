@@ -15,8 +15,6 @@ paths:
       operationId: registerDrone
       summary: registering a drone
       description: registering a drone
-      parameters:
-        - $ref: '#/components/parameters/transactionIdHeaderParam'
       requestBody:
         content:
           application/json:
@@ -42,8 +40,6 @@ paths:
       operationId: checkAvailbility
       summary: Check drone availabity
       description: Check drone availabity
-      parameters:
-        - $ref: '#/components/parameters/transactionIdHeaderParam'
       responses:
         '200':
           description: Drone
@@ -53,8 +49,6 @@ paths:
                 $ref: '#/components/schemas/Drones'
         '400':
           $ref: '#/components/responses/BadRequestError'
-        '409':
-          $ref: '#/components/responses/ConflictError'
         default:
           $ref: '#/components/responses/DefaultError'
   /drone/{droneSerialNumber}/battery:
@@ -64,8 +58,6 @@ paths:
       operationId: droneBatteryLevel
       summary: Check drone battery health
       description: Check drone battery health
-      parameters:
-        - $ref: '#/components/parameters/transactionIdHeaderParam'
       responses:
         '200':
           description: Drone
@@ -75,8 +67,6 @@ paths:
                 $ref: '#/components/schemas/BatteryHealth'
         '400':
           $ref: '#/components/responses/BadRequestError'
-        '409':
-          $ref: '#/components/responses/ConflictError'
         default:
           $ref: '#/components/responses/DefaultError'
 
@@ -87,8 +77,6 @@ paths:
       operationId: loadDroneWithMedication
       summary: loading a drone with medication items
       description: loading a drone with medication items
-      parameters:
-        - $ref: '#/components/parameters/transactionIdHeaderParam'
       requestBody:
         content:
           application/json:
@@ -103,8 +91,8 @@ paths:
                 $ref: '#/components/schemas/MedicationItems'
         '400':
           $ref: '#/components/responses/BadRequestError'
-        '409':
-          $ref: '#/components/responses/ConflictError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailableError'
         default:
           $ref: '#/components/responses/DefaultError'
     get:
@@ -113,8 +101,6 @@ paths:
       operationId: getLoadedMedicationItems
       summary: loaded Medication items for a drone
       description: loaded Medication items for a drone
-      parameters:
-        - $ref: '#/components/parameters/transactionIdHeaderParam'
       responses:
         '200':
           description: Drone registered successfully. Response includes a referenced drone
@@ -129,14 +115,6 @@ paths:
 
 components:
   parameters:
-    transactionIdHeaderParam:
-      in: header
-      name: Transaction-ID
-      required: true
-      description: Transaction header for log tracing header
-      schema:
-        type: string
-        format: uuid
     droneIdInPathParam:
       in: path
       name: droneId
@@ -158,6 +136,15 @@ components:
                 type: string
     BadRequestError:
       description: There may be the following reasons. The JSON production object fails to load, or no attributes are recognized, or it is empty. The requirements of the API contract are not satisfied.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    ServiceUnavailableError:
+      description: There may be the following reasons. Drone battery capacity less than 25% OR Drone is overloaded
       content:
         application/json:
           schema:

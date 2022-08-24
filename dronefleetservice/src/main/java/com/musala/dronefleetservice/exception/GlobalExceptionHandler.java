@@ -31,6 +31,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Error handle(ConflictException exception) {
+        log.error(exception.getMessage());
+        return error(exception.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Error handle(EntityNotFoundException exception) {
         log.error(exception.getMessage());

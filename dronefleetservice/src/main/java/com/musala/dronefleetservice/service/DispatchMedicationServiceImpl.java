@@ -1,8 +1,12 @@
 package com.musala.dronefleetservice.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.musala.dronefleetservice.exception.DroneNotReadyException;
 import com.musala.dronefleetservice.exception.DroneOverloadedException;
@@ -25,6 +29,7 @@ public class DispatchMedicationServiceImpl implements DispatchMedicationService 
 
     private final DroneRepository droneRepository;
     private final MedicationDispatchRepository medicationDispatchRepository;
+    private final StorageService storageService;
 
     @Override
     public List<Medication> loadDrone(String droneSerialNumber, List<Medication> medications) {
@@ -33,10 +38,10 @@ public class DispatchMedicationServiceImpl implements DispatchMedicationService 
         if (drone.isPresent()) {
             var droneValue = drone.get();
 
-            if(droneValue.getBatteryCapacity() < 25){
+            if (droneValue.getBatteryCapacity() < 25) {
                 throw new DroneNotReadyException(ERR_MSG_BATT_LOW);
             }
-            if(!isDroneOverLoaded(droneValue, medications)) {
+            if (!isDroneOverLoaded(droneValue, medications)) {
                 medications.forEach(m -> m.setDrone(droneValue));
                 droneValue.setState(State.LOADED);
                 /*NOTE: assume drone is fully loaded now-real world scenario it will be a
@@ -51,20 +56,30 @@ public class DispatchMedicationServiceImpl implements DispatchMedicationService 
     }
 
     @Override
+    public List<Medication> loadDrone(String droneSerialNumber, Medication medication, MultipartFile fileImage) {
+        var savedImagePath = storageService.store(fileImage);
+        medication.setImagePath(savedImagePath);
+        medication.setImageURL(".../drone/" + droneSerialNumber + "/medication/" + medication.getCode() + "/image");
+
+        return loadDrone(droneSerialNumber, List.of(medication));
+    }
+
+    @Override
     public List<Medication> getMedicationInDrone(String droneSerialNumber) {
         var drone = droneRepository.findById(droneSerialNumber);
-        if(drone.isEmpty()){
+        if (drone.isEmpty()) {
             throw new EntityNotFoundException(ERR_MSG_DRONE_NOT_FOUND);
         }
 
         return drone.get().getMedications();
     }
 
-    private boolean isDroneOverLoaded(Drone drone, List<Medication> medicationsToCarry){
+
+    private boolean isDroneOverLoaded(Drone drone, List<Medication> medicationsToCarry) {
         int medicineWeight = medicationsToCarry.stream().mapToInt(Medication::getWeight).sum();
         int droneExistingMedWeight = drone.getMedications().stream().mapToInt(Medication::getWeight).sum();
 
-        if(medicineWeight + droneExistingMedWeight > drone.getWeightLimit()){
+        if (medicineWeight + droneExistingMedWeight > drone.getWeightLimit()) {
             throw new DroneOverloadedException(ERR_MSG_DRONE_OVERLOAD);
         }
 

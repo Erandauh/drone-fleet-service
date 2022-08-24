@@ -11,4 +11,4 @@ spring:
         defer-datasource-initialization: true
 drone:
     scheduler:
-        fixedDelay: 5000
+        fixedDelay: 60000

@@ -35,8 +35,12 @@ public class Medication {
     @Column(name = "WEIGHT")
     private int weight;
 
+    @JsonIgnore
     @Column(name = "IMAGEPATH")
     private String imagePath;
+
+    @Column(name = "IMAGEURL")
+    private String imageURL;
 
     @ManyToOne
     @JoinColumn(name = "SERIALNUMBER")

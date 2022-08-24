@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,6 +33,9 @@ class DispatchMedicationServiceImplTest {
     private DroneRepository droneRepository;
 
     @Mock
+    private StorageService storageService;
+
+    @Mock
     private MedicationDispatchRepository medicationDispatchRepository;
 
     @InjectMocks
@@ -50,6 +54,24 @@ class DispatchMedicationServiceImplTest {
 
         assertThat(result).containsAll(medicationsToLoad);
         verify(medicationDispatchRepository, times(1)).saveAll(medicationsToLoad);
+    }
+
+    @Test
+    public void canLoadDroneWithMedicineAndImage() {
+
+        var drone = Optional.of(mock(Drone.class));
+        var medicationToLoad =(Medication.builder().code("M1").build());
+        var imagePath = "image_path";
+
+        when(drone.get().getBatteryCapacity()).thenReturn(100);
+        when(droneRepository.findById(any())).thenReturn(drone);
+        when(storageService.store(any())).thenReturn(imagePath);
+
+        var result = dispatchMedicationService.loadDrone(drone.get().getSerialNumber(), medicationToLoad,
+                mock(MultipartFile.class));
+
+        assertThat(result).contains(medicationToLoad);
+        assertThat(result.get(0).getImagePath()).isEqualToIgnoringCase(imagePath);
     }
 
     @Test

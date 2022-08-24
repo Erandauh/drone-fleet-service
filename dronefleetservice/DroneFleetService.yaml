@@ -58,6 +58,8 @@ paths:
       operationId: droneBatteryLevel
       summary: Check drone battery health
       description: Check drone battery health
+      parameters:
+        - $ref: '#/components/parameters/droneSerialNumberInPathParam'
       responses:
         '200':
           description: Drone
@@ -75,13 +77,26 @@ paths:
       tags:
         - Dispatch Medication
       operationId: loadDroneWithMedication
-      summary: loading a drone with medication items
-      description: loading a drone with medication items
+      summary: Adding images are not supported with bulk metadata add.Only the metadata can be saved as bulk.If you need to add image you need to save metadata with content in multipart
+      description: loading a drone with multiple medication items
+      parameters:
+        - $ref: '#/components/parameters/droneSerialNumberInPathParam'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MedicationItems'
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  oneOf:
+                    - $ref: "#/components/schemas/Medication"
+                content:
+                  type: string
+                  format: binary
       responses:
         '201':
           description: Drone registered successfully. Response includes a referenced drone
@@ -101,6 +116,8 @@ paths:
       operationId: getLoadedMedicationItems
       summary: loaded Medication items for a drone
       description: loaded Medication items for a drone
+      parameters:
+        - $ref: '#/components/parameters/droneSerialNumberInPathParam'
       responses:
         '200':
           description: Drone registered successfully. Response includes a referenced drone
@@ -113,17 +130,44 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
+  /medication/{medicationCode}/image:
+    get:
+      tags:
+        - Medication
+      operationId: getMedicationImage
+      summary: Get Image of a medication item
+      description: Get Image of a medication item
+      parameters:
+        - $ref: '#/components/parameters/droneSerialNumberInPathParam'
+        - $ref: '#/components/parameters/medicationCodeInPathParam'
+      responses:
+        '200':
+          description: Image of the Medication Item
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
 components:
   parameters:
-    droneIdInPathParam:
+    droneSerialNumberInPathParam:
       in: path
-      name: droneId
+      name: droneSerialNumber
       description: The native identifier for an Drone
       required: true
       schema:
         type: string
-        format: uuid
-        example: 85993699-bfcc-406e-9dbc-bcfe59dcfa89
+    medicationCodeInPathParam:
+      in: path
+      name: medicationCode
+      description: The native identifier for an Medication
+      required: true
+      schema:
+        type: string
   responses:
     DefaultError:
       description: Default error response

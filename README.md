@@ -85,6 +85,7 @@ curl --location --request POST 'localhost:8080/api/v1/drone/1a/medication' \
 --form 'content=@"/C:/Users/ehoranagam/OneDrive - Wiley/Desktop/download (1).jpg"'
 
 You can use the following to upload as bulk. <B>Please note that image upload is not supported this way, Only metadata can be uploaded as bulk</B>
+
 curl --location --request POST 'localhost:8080/api/v1/drone/1a/medication' \
 --header 'Content-Type: application/json' \
 --data-raw '[{

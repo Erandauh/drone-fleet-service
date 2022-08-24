@@ -9,5 +9,5 @@ import com.musala.dronefleetservice.model.State;
 
 public interface DroneRepository extends JpaRepository<Drone,String> {
 
-    List<Drone> findDronesByState(State IDLE);
+    List<Drone> findDronesByStateAndBatteryCapacityGreaterThan(State IDLE, int batteryCapacity);
 }

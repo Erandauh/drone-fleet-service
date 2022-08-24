@@ -1,5 +1,7 @@
 package com.musala.dronefleetservice.service;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,5 +41,22 @@ class DroneServiceImplTest {
         var result = droneService.register(expected);
 
         assertThat(result).isEqualToComparingFieldByField(expected);
+    }
+
+    @Test
+    public void canCheckForAvailableDronesForFlying() {
+
+        var drones = List.of(Drone.builder().serialNumber("1").batteryCapacity(100).state(State.IDLE).build(),
+                Drone.builder().serialNumber("2").batteryCapacity(20).state(State.IDLE).build(),
+                Drone.builder().serialNumber("2").batteryCapacity(100).state(State.DELIVERING).build());
+
+        var dronesEligibleToFly = List.of(drones.get(0));
+
+        when(droneRepository.findDronesByStateAndBatteryCapacityGreaterThan(State.IDLE, 25))
+                .thenReturn(dronesEligibleToFly);
+
+        var result = droneService.checkAvailableDrones();
+
+        assertThat(result).containsExactlyElementsOf(dronesEligibleToFly);
     }
 }

@@ -27,7 +27,7 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public List<Drone> checkAvailableDrones() {
-        return droneRepository.findDronesByState(State.IDLE);
+        return droneRepository.findDronesByStateAndBatteryCapacityGreaterThan(State.IDLE, 25);
     }
 
     @Override

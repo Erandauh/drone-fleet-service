@@ -4,7 +4,8 @@ Following are the keypoints
  - API Spec first development approach was taken
  - All functionalities are covered with unit tests(Junit 5)
  - TDD approach is taken to the Service layer
- - Lombok(https://projectlombok.org/) is used to eliminate boileplate code -Note:Please enable the ide support for lombok 
+ - Lombok(https://projectlombok.org/) is used to eliminate boileplate code -Note:Please enable the IDE support for lombok before running the code
+ - No Git branching model was considered as this is just a test application (All commits in the main branch)
 
 From Application point of view
  - Audit entries are written to the DB only if drone battery status change occured

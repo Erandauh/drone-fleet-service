@@ -2,6 +2,7 @@
 
 Following are the keypoints
  - API Spec first development approach was taken
+ - Java version 11/Gradle as build tool
  - All functionalities are covered with unit tests(Junit 5)
  - TDD approach is taken to the Service layer
  - Lombok(https://projectlombok.org/) is used to eliminate boileplate code -Note:Please enable the IDE support for lombok before running the code

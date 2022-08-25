@@ -11,6 +11,7 @@ Following are the keypoints
 From Application point of view
  - Audit entries are written to the DB only if drone battery status change occured
  - Assumption : Once loaded a drone, its state is considered LOADED regardless capacity been achived
+ - Assumption : Medicine types loaded to drone will differ from drone to drone, therefore centralised medicine store was not maintained 
  - Image storage is in temp dir for now (Ideally has to be s3 or somewhere for storing the images)
  - All validations listed in the requirment doc is been addressed, others are ignored at this stage (please refer the api spec for more details) 
  - Current scheduler runs in 60 second fixed rate frequency, which is configurable via properties file

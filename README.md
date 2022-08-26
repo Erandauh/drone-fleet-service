@@ -46,6 +46,8 @@ Application is preloaded with some Drone data into H2 in-memory database
 http://localhost:8080/h2-console/login.jsp?jsessionid=a14f45ea3cbd1c9fcfaf3c8a05a9d5e9
 username: sa
 password: password
+DB : jdbc:h2:mem:mydb
+
 ![image](https://user-images.githubusercontent.com/7019484/186404309-e09ede2e-0185-4388-ab01-fc93f1a9f221.png)
 
 

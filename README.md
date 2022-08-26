@@ -56,7 +56,7 @@ Following are the urls based on the requirment specification
 
 # POST localhost:8080/api/v1/drone/register
 
-`curl --location --request POST 'localhost:8080/api/v1/drone/register' \
+curl --location --request POST 'localhost:8080/api/v1/drone/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "serialNumber": "12232",
@@ -64,8 +64,7 @@ Following are the urls based on the requirment specification
     "weightLimit": 500,
     "batteryCapacity": 100,
     "state": "IDLE"
-}'`
-
+}'
 
 
 # GET localhost:8080/api/v1/drone/availability

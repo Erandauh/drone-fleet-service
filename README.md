@@ -111,14 +111,7 @@ curl --location --request GET 'localhost:8080/api/v1/drone/availability' \
 
 # GET localhost:8080/api/v1/medication/1D/image
 
-curl --location --request GET 'localhost:8080/api/v1/medication/1D/image' \
---form 'metadata="{
-        \"code\": \"1D\",
-        \"name\": \"Amoxil\",
-        \"weight\": 50        
-    }";type=application/json' \
---form 'content=@"/C:/Users/ehoranagam/OneDrive - Wiley/Desktop/119666217_10223411612415357_1058103639898233472_n.jpg"'
-
+curl --location --request GET 'localhost:8080/api/v1/medication/1D/image'
 
 # Few screen shots of working application
 ![image](https://user-images.githubusercontent.com/7019484/186402352-029c4ba0-e0db-443e-904c-8aafaddf11a8.png)

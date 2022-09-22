@@ -1,12 +1,12 @@
 openapi: 3.0.0
 info:
   title: Drone Fleet Service
-  description: >
+  description:
     A REST API that allows clients to communicate with the drones
   version: 0.2.0
 servers:
   - url: localhost:8080/api/v1
-    description: Dev environment
+    description: Dev Environment
 paths:
   /drone/register:
     post:
